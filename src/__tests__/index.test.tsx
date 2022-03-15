@@ -4,6 +4,7 @@ import { useMutableStore, useObservable } from "..";
 
 describe("useObservable & useMutable", () => {
   let mut: MutableStore<number>;
+
   const Counter = () => {
     mut = useMutableStore(0);
     const value = useObservable(mut);
@@ -17,9 +18,11 @@ describe("useObservable & useMutable", () => {
 
   it("should keep track of the observable", () => {
     const r = render(<Counter />);
-    expect(r.queryAllByTitle("count")[0]?.textContent).toBe("0");
-    r.queryAllByText("Inc")[0]?.click();
-    expect(r.queryAllByTitle("count")[0]?.textContent).toBe("1");
+
+    expect(r.queryByTitle("count")?.textContent).toBe("0");
+
+    r.queryByText("Inc")?.click();
+    expect(r.queryByTitle("count")?.textContent).toBe("1");
 
     cleanup();
     expect(mut.isObserved()).toBeFalsy();
